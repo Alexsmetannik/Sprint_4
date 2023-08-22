@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+// класс главной страницы
 public class MainPage {
     private WebDriver driver;
 
@@ -78,8 +79,9 @@ public class MainPage {
     }
 
     // Метод клика по верхней кнопке Заказать
-    public void clickOnAboveOrderButton(WebDriver driver) {
+    public void clickOnAboveOrderButton(WebDriver driver) throws InterruptedException {
         driver.findElement(aboveOrderButton).click();
+        Thread.sleep(3000);
     }
 
     // Метод клика по нижней кнопке Заказать

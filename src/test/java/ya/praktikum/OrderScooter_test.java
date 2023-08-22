@@ -25,18 +25,37 @@ public class OrderScooter_test {
     }
 
     @Test
-    public void checkOrderScooter() {
+    public void checkOrderScooter() throws InterruptedException {
         // переход на страницу тестового приложения
         driver.get("https://qa-scooter.praktikum-services.ru/");
 
         // создаётся объект класса главной страницы
         MainPage objMainPage = new MainPage(driver);
-        // создаётся объект класса формы заказа
+        // создаётся объект класса формы заполнения данных заказчика
+        OrdererPage objOrdererPage = new OrdererPage(driver);
+        // создаётся объект класса формы заполнения данных заказа
         OrderPage objOrderPage = new OrderPage(driver);
 
+        String firstName = "Николай";
+        String lastName = "Петров";
+        String address = "г. Москва, проспект Вернадского, 43с1, кв.48";
+        String metro = "Фили";
+        String phone = "89200072839";
+
+        objMainPage.clickOnCookiesButton(driver);
         objMainPage.clickOnAboveOrderButton(driver);
-        objOrderPage.waitForLoadHeader(driver);
+        objOrdererPage.waitForLoadHeaderOrdererPage(driver);
       //  objMainPage.clickOnBelowOrderButton(driver);
+
+        objOrdererPage.setFirstName(firstName);
+        objOrdererPage.setLastName(lastName);
+        objOrdererPage.setAddress(address);
+        objOrdererPage.setMetro(metro);
+        objOrdererPage.setPhone(phone);
+        objOrdererPage.clickOnGoButton();
+
+        objOrderPage.waitForLoadHeaderOrderPage(driver);
+
         killDriver();
     }
 
