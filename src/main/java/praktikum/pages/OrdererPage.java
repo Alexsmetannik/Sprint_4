@@ -1,11 +1,8 @@
-package ya.praktikum;
+package praktikum.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -19,25 +16,25 @@ public class OrdererPage {
     }
 
     //локатор заголовка формы
-    private By ordererHeader = By.xpath("//*[@id='root']/div/div[2]/div[1]");
+    private static final By ordererHeader = By.xpath("//*[@id='root']/div/div[2]/div[1]");
 
     //локатор поля Имя
-    private By firstNameField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[1]/input");
+    private static final By firstNameField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[1]/input");
 
     //локатор поля Фамилия
-    private By lastNameField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[2]/input");
+    private static final By lastNameField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[2]/input");
 
     //локатор поля Адрес
-    private By addressField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[3]/input");
+    private static final By addressField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[3]/input");
 
     //локатор поля Метро
-    private By metrofield = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[4]/div/div/input");
+    private static final By metroField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[4]/div/div/input");
 
     //локатор поля Телефон
-    private By phonefield = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[5]/input");
+    private static final By phoneField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[5]/input");
 
     //локатор кнопки Далее
-    private By goButton = By.xpath("//*[@id='root']/div/div[2]/div[3]/button");
+    private static final By goButton = By.xpath("//*[@id='root']/div/div[2]/div[3]/button");
 
     // метод ожидания загрузки заголовка
     public void waitForLoadHeaderOrdererPage(WebDriver driver){
@@ -46,45 +43,40 @@ public class OrdererPage {
     }
 
     // метод заполнения имени
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) throws InterruptedException {
         driver.findElement(firstNameField).sendKeys(firstName);
+        Thread.sleep(1000);
     }
 
     // метод заполнения фамилии
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) throws InterruptedException {
         driver.findElement(lastNameField).sendKeys(lastName);
+        Thread.sleep(1000);
     }
 
     // метод заполнения адреса
-    public void setAddress(String address) {
+    public void setAddress(String address) throws InterruptedException {
         driver.findElement(addressField).sendKeys(address);
+        Thread.sleep(1000);
     }
 
     // метод заполнения метро
     public void setMetro(String metro) throws InterruptedException {
-        Thread.sleep(2000);
-        driver.findElement(metrofield).click();
-        Select dropdown = new Select(driver.findElement(metrofield));
-        dropdown.deselectByValue(metro);
-        Thread.sleep(2000);
-        /*
-        Thread.sleep(2000);
-        driver.findElement(metrofield).sendKeys(metro);
-        Thread.sleep(2000);
-        driver.findElement(metrofield).click();
-        Thread.sleep(2000);
-
-        */
+        driver.findElement(metroField).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@class='Order_Text__2broi'][text()='" + metro + "']")).click();
+        Thread.sleep(1000);
     }
 
     // метод заполнения телефона
-    public void setPhone(String phone){
-        driver.findElement(phonefield).sendKeys(phone);
+    public void setPhone(String phone) throws InterruptedException {
+        driver.findElement(phoneField).sendKeys(phone);
+        Thread.sleep(1000);
     }
 
     // метод нажатия на кнопку Далее
     public void clickOnGoButton() throws InterruptedException {
-        Thread.sleep(3000);
         driver.findElement(goButton).click();
+        Thread.sleep(1000);
     }
 }

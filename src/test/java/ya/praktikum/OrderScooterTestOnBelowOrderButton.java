@@ -6,11 +6,17 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import praktikum.pages.ConfirmPage;
+import praktikum.pages.MainPage;
+import praktikum.pages.OrderPage;
+import praktikum.pages.OrdererPage;
 
 import java.io.File;
 import java.time.Duration;
 
-public class OrderScooter_test {
+import static org.junit.Assert.assertEquals;
+
+public class OrderScooterTestOnBelowOrderButton {
     private WebDriver driver;
 
     @Before
@@ -35,17 +41,26 @@ public class OrderScooter_test {
         OrdererPage objOrdererPage = new OrdererPage(driver);
         // создаётся объект класса формы заполнения данных заказа
         OrderPage objOrderPage = new OrderPage(driver);
+        // создаётся объект класса формы подтверждения заказа
+        ConfirmPage objConfirmPage = new ConfirmPage(driver);
 
         String firstName = "Николай";
         String lastName = "Петров";
         String address = "г. Москва, проспект Вернадского, 43с1, кв.48";
         String metro = "Фили";
         String phone = "89200072839";
+        String day = "23.08.2023";
+        String period = "сутки";
+        String colour = "Black";
+        String comment = "Предоставьте услугу как можно скорее";
+        String expectedMessage = "Заказ оформлен";
 
+
+
+        //test Below OrderButton
         objMainPage.clickOnCookiesButton(driver);
-        objMainPage.clickOnAboveOrderButton(driver);
+        objMainPage.clickOnBelowOrderButton(driver);
         objOrdererPage.waitForLoadHeaderOrdererPage(driver);
-      //  objMainPage.clickOnBelowOrderButton(driver);
 
         objOrdererPage.setFirstName(firstName);
         objOrdererPage.setLastName(lastName);
@@ -55,6 +70,19 @@ public class OrderScooter_test {
         objOrdererPage.clickOnGoButton();
 
         objOrderPage.waitForLoadHeaderOrderPage(driver);
+        objOrderPage.setPeriod(period);
+        objOrderPage.setCheckBox(colour);
+        objOrderPage.setCommentField(comment);
+        objOrderPage.setDate(day);
+        objOrderPage.clickOrderButton();
+
+        objConfirmPage.waitForLoadHeaderConfirmPage(driver);
+        objConfirmPage.clickYesButton();
+        objConfirmPage.waitForLoadFinishHeader(driver);
+        String getMessage = objConfirmPage.getTextInHeader();
+
+        // проверка, что полученное сообщение совпадает с ожидаемым сообщением
+        assertEquals("Полученное сообщение не совпадает с ожидаемым сообщением", getMessage, expectedMessage);
 
         killDriver();
     }
