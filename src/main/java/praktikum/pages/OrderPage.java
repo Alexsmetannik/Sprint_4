@@ -9,20 +9,20 @@ import java.time.Duration;
 
 // класс формы заполнения данных заказа
 public class OrderPage {
-    private WebDriver driver;
+    final WebDriver driver;
 
     public OrderPage(WebDriver driver){
         this.driver = driver;
     }
 
     //локатор заголовка формы
-    private static final By orderHeader = By.xpath("//*[@id='root']/div/div[2]/div[1]");
+    private static final By orderHeader = By.xpath("//div[text()='Про аренду']");
 
     //локатор поля даты
-    private static final By dateField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[1]/div[1]/div/input");
+    private static final By dateField = By.xpath("//input[@placeholder='* Когда привезти самокат']");
 
     //локатор поля срока
-    private static final By periodField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[2]/div/div[1]");
+    private static final By periodField = By.xpath("//div[text()='* Срок аренды']");
 
     //локатор чек-бокса черного цвета самоката
     private static final By blackColourCheckBox = By.xpath("//*[@id='black']");
@@ -31,10 +31,10 @@ public class OrderPage {
     private static final By greyColourCheckBox = By.xpath("//*[@id='grey']");
 
     //локатор поля комментария
-    private static final By commentField = By.xpath("//*[@id='root']/div/div[2]/div[2]/div[4]/input");
+    private static final By commentField = By.xpath("//input[@placeholder='Комментарий для курьера']");
 
     //локатор кнопки Заказать
-    private static final By orderButton = By.xpath("//*[@id='root']/div/div[2]/div[3]/button[2]");
+    private static final By orderButton = By.xpath("//*[@class='Order_Buttons__1xGrp']/button[text()='Заказать']");
 
 
 
@@ -48,37 +48,38 @@ public class OrderPage {
     // метод заполнения даты
     public void setDate(String day) throws InterruptedException {
         driver.findElement(dateField).sendKeys(day);
-        Thread.sleep(1000);
     }
 
     // метод заполнения срока
     public void setPeriod(String period) throws InterruptedException {
         driver.findElement(periodField).click();
-        Thread.sleep(1000);
         driver.findElement(By.xpath("//*[@class='Dropdown-option'][text()='" + period + "']")).click();
-        Thread.sleep(1000);
     }
 
     // метод активации чек-бокса черного цвета самоката
     public void setCheckBox(String Colour) throws InterruptedException {
         if (Colour.equals("Black")) {
             driver.findElement(blackColourCheckBox).click();
-            Thread.sleep(1000);
         } else  if (Colour.equals("Gray")) {
             driver.findElement(greyColourCheckBox).click();
-            Thread.sleep(1000);
         }
     }
 
     // метод заполнения комментария
     public void setCommentField(String comment) throws InterruptedException {
         driver.findElement(commentField).sendKeys(comment);
-        Thread.sleep(1000);
     }
 
     // метод нажатия на кнопку Заказать
     public void clickOrderButton() throws InterruptedException {
         driver.findElement(orderButton).click();
-        Thread.sleep(1000);
+    }
+
+    public void transitionInConfirmPage(String period, String colour, String comment, String day) throws InterruptedException {
+        setPeriod(period);
+        setCheckBox(colour);
+        setCommentField(comment);
+        setDate(day);
+        clickOrderButton();
     }
 }

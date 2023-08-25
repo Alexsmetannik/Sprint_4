@@ -8,20 +8,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class ConfirmPage {
-    private WebDriver driver;
+    final WebDriver driver;
 
     public ConfirmPage(WebDriver driver){
         this.driver = driver;
     }
 
     //локатор заголовка формы
-    private static final By confirmHeader = By.xpath("//*[@class='Order_ModalHeader__3FDaJ']");
+    private static final By confirmHeader = By.xpath("//div[text()='Хотите оформить заказ?']");
 
     //локатор кнопки Да
-    private static final By yesButton = By.xpath("//*[@id='root']/div/div[2]/div[5]/div[2]/button[2]");
+    private static final By yesButton = By.xpath("//button[text()='Да']");
 
     //локатор заголовка финального сообщения
-    private static final By finishHeader = By.xpath("//*[@class='Order_ModalHeader__3FDaJ']");
+    private static final By finishHeader = By.xpath("//div[text()='Заказ оформлен']");
 
 
     // метод ожидания загрузки заголовка
@@ -33,7 +33,6 @@ public class ConfirmPage {
     // метод нажатия на кнопку Да
     public void clickYesButton() throws InterruptedException {
         driver.findElement(yesButton).click();
-        Thread.sleep(3000);
     }
 
     // метод ожидания загрузки заголовка финального сообщения

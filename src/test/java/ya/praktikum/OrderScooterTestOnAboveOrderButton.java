@@ -1,37 +1,24 @@
 package ya.praktikum;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import praktikum.pages.ConfirmPage;
 import praktikum.pages.MainPage;
 import praktikum.pages.OrderPage;
 import praktikum.pages.OrdererPage;
 
-import java.io.File;
-import java.time.Duration;
-
 import static org.junit.Assert.assertEquals;
 
 public class OrderScooterTestOnAboveOrderButton {
-    private WebDriver driver;
 
-    @Before
-    // драйвер для браузера Chrome
-    public void initDriver() {
-        System.setProperty("webdriver.http.factory", "jdk-http-client");
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("C:/Users/Alex/projects/WebDriver/bin/chromedriver/chromedriver"))
-                .build();
-        driver = new ChromeDriver(service);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-    }
+    @Rule
+    public DriverRule driverRule = new DriverRule();
 
     @Test
     public void checkOrderScooter() throws InterruptedException {
+
+        WebDriver driver = driverRule.getDriver();
         // переход на страницу тестового приложения
         driver.get("https://qa-scooter.praktikum-services.ru/");
 
@@ -44,50 +31,31 @@ public class OrderScooterTestOnAboveOrderButton {
         // создаётся объект класса формы подтверждения заказа
         ConfirmPage objConfirmPage = new ConfirmPage(driver);
 
-        String firstName = "Николай";
-        String lastName = "Петров";
-        String address = "г. Москва, проспект Вернадского, 43с1, кв.48";
-        String metro = "Фили";
-        String phone = "89200072839";
-        String day = "23.08.2023";
+        String firstName = "Сергей";
+        String lastName = "Иванов";
+        String address = "г. Москва, ул. Ленина, д.13, кв.3";
+        String metro = "Строгино";
+        String phone = "89003234590";
+        String day = "30.08.2023";
         String period = "сутки";
-        String colour = "Black";
-        String comment = "Предоставьте услугу как можно скорее";
+        String colour = "Gray";
+        String comment = "Позвоните перед готовностью";
         String expectedMessage = "Заказ оформлен";
 
         //test Above OrderButton
         objMainPage.clickOnCookiesButton(driver);
         objMainPage.clickOnAboveOrderButton(driver);
         objOrdererPage.waitForLoadHeaderOrdererPage(driver);
-
-        objOrdererPage.setFirstName(firstName);
-        objOrdererPage.setLastName(lastName);
-        objOrdererPage.setAddress(address);
-        objOrdererPage.setMetro(metro);
-        objOrdererPage.setPhone(phone);
-        objOrdererPage.clickOnGoButton();
-
+        objOrdererPage.transitionInOrderPage(firstName, lastName, address, metro, phone);
         objOrderPage.waitForLoadHeaderOrderPage(driver);
-        objOrderPage.setPeriod(period);
-        objOrderPage.setCheckBox(colour);
-        objOrderPage.setCommentField(comment);
-        objOrderPage.setDate(day);
-        objOrderPage.clickOrderButton();
-
+        objOrderPage.transitionInConfirmPage(period, colour, comment, day);
         objConfirmPage.waitForLoadHeaderConfirmPage(driver);
         objConfirmPage.clickYesButton();
         objConfirmPage.waitForLoadFinishHeader(driver);
+
         String getMessage = objConfirmPage.getTextInHeader();
 
         // проверка, что полученное сообщение совпадает с ожидаемым сообщением
-        assertEquals("Полученное сообщение не совпадает с ожидаемым сообщением", getMessage, expectedMessage);
-
-        killDriver();
-    }
-
-    @After
-    // Закрытие браузера
-    public void killDriver() {
-        driver.quit();
+        assertEquals("Полученное сообщение не совпадает с ожидаемым сообщением", expectedMessage, getMessage);
     }
 }

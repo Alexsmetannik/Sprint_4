@@ -4,16 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-
-import static org.junit.Assert.assertEquals;
 
 // класс главной страницы
 public class MainPage {
-    private WebDriver driver;
+
+    final WebDriver driver;
 
     public MainPage(WebDriver driver){
         this.driver = driver;
@@ -23,10 +18,10 @@ public class MainPage {
     private static final By cookiesButton = By.className("App_CookieButton__3cvqF");
 
     //локатор верхней кнопки Заказать
-    private static final By aboveOrderButton = By.xpath("//*[@id='root']/div/div/div[1]/div[2]/button[1]");
+    private static final By aboveOrderButton = By.xpath("//*[@class='Button_Button__ra12g']");
 
     //локатор нижней кнопки Заказать
-    private static final By belowOrderButton = By.xpath("//*[@id='root']/div/div/div[4]/div[2]/div[5]/button");
+    private static final By belowOrderButton = By.xpath("//*[@class='Home_FinishButton__1_cWm']/button");
 
     //создаётся массив с локатарами стрелочек
     String[] arrows = {"//*[@id='accordion__heading-0']",
@@ -53,7 +48,6 @@ public class MainPage {
     // Метод клика по кнопке куки
     public void clickOnCookiesButton(WebDriver driver) throws InterruptedException {
         driver.findElement(cookiesButton).click();
-        Thread.sleep(1000);
     }
 
     // Метод клика по стрелочке
@@ -69,15 +63,12 @@ public class MainPage {
     // Метод клика по верхней кнопке Заказать
     public void clickOnAboveOrderButton(WebDriver driver) throws InterruptedException {
         driver.findElement(aboveOrderButton).click();
-        Thread.sleep(1000);
     }
 
     // Метод клика по нижней кнопке Заказать
     public void clickOnBelowOrderButton(WebDriver driver) throws InterruptedException {
         WebElement element = driver.findElement(belowOrderButton);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
-        Thread.sleep(1000);
         driver.findElement(belowOrderButton).click();
-        Thread.sleep(1000);
     }
 }
